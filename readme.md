@@ -1,6 +1,6 @@
 # 1. Install
 ## 1.1. Linux/Macos amd64
-```
+```shell
 sudo curl https://github.com/lttrungn1742/assume-role/releases/download/v1/assume-role --output /usr/local/bin/assume-role
 ```
 
