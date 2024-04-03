@@ -27,3 +27,6 @@ jobs:
         with:
           name: assume-role
           path: assume-role
+          overwrite: true
+          compression-level: 0
+          if-no-files-found: error
