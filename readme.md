@@ -1,4 +1,10 @@
-# 1. Configuration
+# 1. Install
+## 1.1. Linux/Macos amd64
+```
+sudo curl https://github.com/lttrungn1742/assume-role/releases/download/v1/assume-role --output /usr/local/bin/assume-role
+```
+
+# 2. Configuration
 
 
 For example:
@@ -29,6 +35,6 @@ aws_access_key_id = ****************
 aws_secret_access_key = ****************
 ```
 
-# 2. Usage
+# 3. Usage
 
 `assume-role dev`
