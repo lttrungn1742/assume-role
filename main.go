@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
@@ -47,6 +48,7 @@ func main() {
 		config.WithAssumeRoleCredentialOptions(
 			func(aro *stscreds.AssumeRoleOptions) {
 				aro.TokenProvider = stscreds.StdinTokenProvider
+				aro.Duration = time.Duration(60) * time.Minute
 			}),
 	)
 
