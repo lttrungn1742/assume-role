@@ -10,6 +10,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
+	"runtime"
 )
 
 func usage() {
@@ -24,7 +25,6 @@ func init() {
 func must(err error) {
 	if err != nil {
 		if _, ok := err.(*exec.ExitError); ok {
-			// Errors are already on Stderr.
 			os.Exit(1)
 		}
 
@@ -57,7 +57,13 @@ func main() {
 
 	must(err)
 
-	fmt.Printf("export AWS_ACCESS_KEY_ID=%s\n", credentials.AccessKeyID)
-	fmt.Printf("export AWS_SECRET_ACCESS_KEY=%s\n", credentials.SecretAccessKey)
-	fmt.Printf("export AWS_SESSION_TOKEN=%s\n", credentials.SessionToken)
+	if runtime.GOOS == "windows" {
+		fmt.Printf("$env:AWS_ACCESS_KEY_ID=%s\n", credentials.AccessKeyID)
+		fmt.Printf("$env:AWS_SECRET_ACCESS_KEY=%s\n", credentials.SecretAccessKey)
+		fmt.Printf("$env:AWS_SESSION_TOKEN=%s\n", credentials.SessionToken)
+	} else {
+		fmt.Printf("export AWS_ACCESS_KEY_ID=%s\n", credentials.AccessKeyID)
+		fmt.Printf("export AWS_SECRET_ACCESS_KEY=%s\n", credentials.SecretAccessKey)
+		fmt.Printf("export AWS_SESSION_TOKEN=%s\n", credentials.SessionToken)
+	}
 }
