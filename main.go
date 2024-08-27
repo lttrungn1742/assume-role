@@ -58,9 +58,9 @@ func main() {
 	must(err)
 
 	if runtime.GOOS == "windows" {
-		fmt.Printf("$env:AWS_ACCESS_KEY_ID=%s\n", credentials.AccessKeyID)
-		fmt.Printf("$env:AWS_SECRET_ACCESS_KEY=%s\n", credentials.SecretAccessKey)
-		fmt.Printf("$env:AWS_SESSION_TOKEN=%s\n", credentials.SessionToken)
+		fmt.Printf("$env:AWS_ACCESS_KEY_ID=\"%s\"\n", credentials.AccessKeyID)
+		fmt.Printf("$env:AWS_SECRET_ACCESS_KEY=\"%s\"\n", credentials.SecretAccessKey)
+		fmt.Printf("$env:AWS_SESSION_TOKEN=\"%s\"\n", credentials.SessionToken)
 	} else {
 		fmt.Printf("export AWS_ACCESS_KEY_ID=%s\n", credentials.AccessKeyID)
 		fmt.Printf("export AWS_SECRET_ACCESS_KEY=%s\n", credentials.SecretAccessKey)
