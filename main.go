@@ -2,25 +2,16 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"os"
 	"os/exec"
 	"time"
 
+	"runtime"
+
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
-	"runtime"
 )
-
-func usage() {
-	fmt.Fprintf(os.Stderr, "Usage: %s <role>\n", os.Args[0])
-	flag.PrintDefaults()
-}
-
-func init() {
-	flag.Usage = usage
-}
 
 func must(err error) {
 	if err != nil {
@@ -34,14 +25,11 @@ func must(err error) {
 }
 
 func main() {
-
-	flag.Parse()
-	argv := flag.Args()
-	if len(argv) < 1 {
-		flag.Usage()
-		os.Exit(1)
+	role := os.Args[0]
+	var system string = ""
+	if len(os.Args) == 2 {
+		system = os.Args[1]
 	}
-	role := argv[0]
 
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithSharedConfigProfile(role),
@@ -57,7 +45,17 @@ func main() {
 
 	must(err)
 
-	if runtime.GOOS == "windows" {
+	if system == "--windows" {
+		fmt.Printf("$env:AWS_ACCESS_KEY_ID=\"%s\"\n", credentials.AccessKeyID)
+		fmt.Printf("$env:AWS_SECRET_ACCESS_KEY=\"%s\"\n", credentials.SecretAccessKey)
+		fmt.Printf("$env:AWS_SESSION_TOKEN=\"%s\"\n", credentials.SessionToken)
+	} else {
+		fmt.Printf("export AWS_ACCESS_KEY_ID=%s\n", credentials.AccessKeyID)
+		fmt.Printf("export AWS_SECRET_ACCESS_KEY=%s\n", credentials.SecretAccessKey)
+		fmt.Printf("export AWS_SESSION_TOKEN=%s\n", credentials.SessionToken)
+	}
+
+	if runtime.GOOS == "windows" || system == "" {
 		fmt.Printf("$env:AWS_ACCESS_KEY_ID=\"%s\"\n", credentials.AccessKeyID)
 		fmt.Printf("$env:AWS_SECRET_ACCESS_KEY=\"%s\"\n", credentials.SecretAccessKey)
 		fmt.Printf("$env:AWS_SESSION_TOKEN=\"%s\"\n", credentials.SessionToken)
